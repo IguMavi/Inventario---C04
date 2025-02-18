@@ -4,35 +4,35 @@ using namespace std;
 
 void InserirItem()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void Cadastro()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void Buscar()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void Verificar()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void ListarNome()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void ListarRaridade()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void ContarItens()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 void RemoverItens()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	cout << "Funcionalidade em contruÃ§ao" << endl;
 }
 
 
@@ -41,8 +41,10 @@ int main()
 {
 	int x;
 	setlocale(LC_ALL, "");
+	
 	while(true)
 	{
+		cout << endl;
 		cout << "[1] - inserir item" << endl;
 		cout << "[2] - cadastrar similaridades entre itens" << endl;
 		cout << "[3] - buscar itens similares" << endl;
@@ -52,9 +54,9 @@ int main()
 		cout << "[7] - contar itens com a mesma propriedade magica" << endl;
 		cout << "[8] - remover itens menos raros" << endl;
 		cout << "[0] - sair" << endl;
-		
-		cout << "Insira opçao desejada: ";
-		cin >> x;
+		cout << endl;
+		cout << "Insira opÃ§Ã£o desejada: ";
+		cin >> x; cout << endl;
 		
 		switch(x)
 		{
@@ -84,6 +86,8 @@ int main()
 				break;
 			case 0:
 				return 0;
+			default:
+				cout << "opÃ§Ã£o invalida" << endl;;
 		}
 	}
 	
