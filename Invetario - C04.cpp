@@ -1,7 +1,7 @@
 #include <iostream>
 #include <locale>
-#include <list>
 #include <string>
+#include <list>
 using namespace std;
 
 struct Itens
@@ -10,7 +10,9 @@ struct Itens
 	int id, raridade;
 };
 
+
 list <Itens> itens;
+
 
 void InserirItem()
 {
@@ -24,42 +26,73 @@ void InserirItem()
 	cout << "Raridade do Item: "; cin >> raridade;
 	itens.push_back({nome, dono, magia, id, raridade});
 	cout << endl;
-	
+}
+
+
+struct Similaridade
+{
+	int	origem, destino, peso;	
+};
+
+list <Similaridade> similarens[999999];
+
+void Cadastro()
+{
+	int i = 1, item1, item2, peso, arestas = 0;
+	cout << "Itens no inventario" << endl;
 	list<Itens>::iterator it;
 	
 	for(it = itens.begin(); it != itens.end(); it++)
 	{
+		cout << "(" << i << ") ";
 		cout << it->nome << endl;
-		cout << it->dono << endl;
-		cout << it->magia << endl;
-		cout << it->id << endl;
-		cout << it->raridade << endl;
+		i++;
+	}
+	cout << endl; cout << "Selecione dois itens: ";
+	cin >> item1 >> item2;
+	item1--; item2--;
+	cout << "Escreva similiaridade entre os itens (0-100): ";
+	cin >> peso; arestas++;
+	
+	similarens[item1].push_back({item1,item2,peso});
+	similarens[item2].push_back({item2,item1,peso});
+	
+	list<Similaridade>::iterator ti;
+	for(int i=0; i < arestas; i++)
+	{
+		for(ti = similarens[i].begin(); ti != similarens[i].end(); ti++)
+		{
+			cout << "(" << ti -> item1 << ")" << "(" << ti -> item2 + 1 << " -";
+			cout << " " << ti -> peso << ") ";
+		}
 	}
 }
-void Cadastro()
-{
-	cout << "Funcionalidade em contruçao" << endl;
-}
+
 void Buscar()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
+
 void Verificar()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
+
 void ListarNome()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
+
 void ListarRaridade()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
+
 void ContarItens()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
+
 void RemoverItens()
 {
 	cout << "Funcionalidade em contruçao" << endl;
