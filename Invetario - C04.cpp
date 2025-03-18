@@ -1,10 +1,40 @@
 #include <iostream>
 #include <locale>
+#include <list>
+#include <string>
 using namespace std;
+
+struct Itens
+{
+	string nome, dono, magia;
+	int id, raridade;
+};
+
+list <Itens> itens;
 
 void InserirItem()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	string nome, dono, magia;
+	int id, raridade;
+	
+	cout << "Nome do Item: "; getline(cin >> ws, nome);
+	cout << "Nome do Dono: "; getline(cin >> ws, dono);
+	cout << "Propriedade magica: "; getline(cin >> ws, magia);
+	cout << "Numero de Identidade: "; cin >> id;
+	cout << "Raridade do Item: "; cin >> raridade;
+	itens.push_back({nome, dono, magia, id, raridade});
+	cout << endl;
+	
+	list<Itens>::iterator it;
+	
+	for(it = itens.begin(); it != itens.end(); it++)
+	{
+		cout << it->nome << endl;
+		cout << it->dono << endl;
+		cout << it->magia << endl;
+		cout << it->id << endl;
+		cout << it->raridade << endl;
+	}
 }
 void Cadastro()
 {
