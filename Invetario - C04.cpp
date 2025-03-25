@@ -58,11 +58,11 @@ void Cadastro()
 	similarens[item2].push_back({item2,item1,peso});
 	
 	list<Similaridade>::iterator ti;
-	for(int i=0; i < arestas; i++)
+	for(i=0; i < arestas; i++)
 	{
 		for(ti = similarens[i].begin(); ti != similarens[i].end(); ti++)
 		{
-			cout << "(" << ti -> item1 << ")" << "(" << ti -> item2 + 1 << " -";
+			cout << "(" << ti -> origem << ")" << "(" << ti -> destino + 1 << " -";
 			cout << " " << ti -> peso << ") ";
 		}
 	}
