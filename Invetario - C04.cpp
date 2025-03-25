@@ -10,14 +10,21 @@ struct Itens
 	int id, raridade;
 };
 
+struct Similaridade
+{
+	int	origem, destino, peso;	
+};
 
+list <Similaridade> similarens[999999];
+list<Similaridade>::iterator ti;
+list<Itens>::iterator it;
 list <Itens> itens;
-
+string N[99999];
 
 void InserirItem()
 {
 	string nome, dono, magia;
-	int id, raridade;
+	int id, raridade, i = 0;
 	
 	cout << "Nome do Item: "; getline(cin >> ws, nome);
 	cout << "Nome do Dono: "; getline(cin >> ws, dono);
@@ -26,22 +33,14 @@ void InserirItem()
 	cout << "Raridade do Item (0-100): "; cin >> raridade;
 	itens.push_back({nome, dono, magia, id, raridade});
 	cout << endl;
+	N[i] = nome;
+	i++;
 }
-
-
-struct Similaridade
-{
-	int	origem, destino, peso;	
-};
-
-list <Similaridade> similarens[999999];
 
 void Cadastro()
 {
 	int i = 1, item1, item2, peso, arestas = 0;
-	
 	cout << "Itens no inventario" << endl;
-	list<Itens>::iterator it;
 	
 	for(it = itens.begin(); it != itens.end(); it++)
 	{
@@ -58,14 +57,13 @@ void Cadastro()
 	similarens[item1].push_back({item1,item2,peso});
 	similarens[item2].push_back({item2,item1,peso});
 	
-	list<Similaridade>::iterator ti;
 	
 	cout << endl << "Tabela de Similaridades: " << endl;
 	for(i=0; i < arestas; i++)
 	{
 		for(ti = similarens[i].begin(); ti != similarens[i].end(); ti++)
 		{
-			cout << ti -> origem+1 << " similar com " << ti -> destino + 1 << ": ";
+			cout << ti ->origem + 1 << " similar com " << ti -> destino + 1 << ": ";
 			cout << ti -> peso << "%" << endl;
 		}
 	}
@@ -73,6 +71,32 @@ void Cadastro()
 
 void Buscar()
 {
+	string nome, doninho;
+	int similaridade;
+	
+	cout << "Escolha um dono: ";
+	getline(cin >> ws, doninho);
+	cout << "Digite o nome do item: ";
+	getline(cin >> ws, nome);
+	cout << "Digite a similaridade: ";
+	cin >> similaridade;
+	
+	ti = similarens.begin();
+	for(it = itens.begin(); it != itens.end(); it++)
+	{
+		if(it->dono!=doninho)
+		{
+			if(ti->origem == it && similaridade <= ti->peso)
+			{
+				if(N[it] == nome)
+				{
+					cout << it -> nome << endl;
+				}
+			}
+		}
+		ti++;
+	}
+	
 	cout << "Funcionalidade em contruçao" << endl;
 }
 
