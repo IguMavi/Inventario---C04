@@ -23,7 +23,7 @@ void InserirItem()
 	cout << "Nome do Dono: "; getline(cin >> ws, dono);
 	cout << "Propriedade magica: "; getline(cin >> ws, magia);
 	cout << "Numero de Identidade: "; cin >> id;
-	cout << "Raridade do Item: "; cin >> raridade;
+	cout << "Raridade do Item (0-100): "; cin >> raridade;
 	itens.push_back({nome, dono, magia, id, raridade});
 	cout << endl;
 }
@@ -39,6 +39,7 @@ list <Similaridade> similarens[999999];
 void Cadastro()
 {
 	int i = 1, item1, item2, peso, arestas = 0;
+	
 	cout << "Itens no inventario" << endl;
 	list<Itens>::iterator it;
 	
@@ -58,12 +59,14 @@ void Cadastro()
 	similarens[item2].push_back({item2,item1,peso});
 	
 	list<Similaridade>::iterator ti;
+	
+	cout << endl << "Tabela de Similaridades: " << endl;
 	for(i=0; i < arestas; i++)
 	{
 		for(ti = similarens[i].begin(); ti != similarens[i].end(); ti++)
 		{
-			cout << "(" << ti -> origem << ")" << "(" << ti -> destino + 1 << " -";
-			cout << " " << ti -> peso << ") ";
+			cout << ti -> origem+1 << " similar com " << ti -> destino + 1 << ": ";
+			cout << ti -> peso << "%" << endl;
 		}
 	}
 }
