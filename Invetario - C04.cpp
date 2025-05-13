@@ -3,44 +3,99 @@
 #include <string>
 #include <list>
 #include <cstdlib>
-
+ 
 using namespace std;
-
+ 
 struct Itens
 {
 	string nome, dono, magia;
 	int id, raridade;
 };
-
+ 
 struct Similaridade
 {
 	int	origem, destino, peso;	
 };
-
+ 
+struct ArvoreNome
+{
+	string nome;
+	ArvoreNome * left;
+	ArvoreNome * right;
+};
+ 
+struct ArvoreRaridade
+{
+	int raro;
+	ArvoreRaridade * left;
+	ArvoreRaridade * right;
+};
+ 
 list <Itens> itens;
 list<Itens>::iterator it;
-
+ 
 list <Similaridade> similarens[9999];
 list<Similaridade>::iterator ti;
-
+ 
+ArvoreNome * root = NULL; // Para a arvore binaria
+ArvoreRaridade* raiz = NULL;
+ 
+void inserNome(ArvoreNome * &curr, string nome)
+{
+	if(curr == NULL)
+	{
+		curr = new ArvoreNome;
+		curr->nome = nome;
+		curr->left = NULL;
+		curr->right = NULL;
+	}
+	else if(nome < curr->nome)
+	{
+		inserNome(curr->left,nome);
+	}
+	else
+	{
+		inserNome(curr->right,nome);
+	}
+}
+ 
+void insertRaridade(ArvoreRaridade * &curr, int raro)
+{
+	if(curr == NULL)
+	{
+		curr = new ArvoreRaridade;
+		curr->raro = raro;
+		curr->left = NULL;
+		curr->right = NULL;
+	}
+	else if(raro < curr->raro)
+	{
+		insertRaridade(curr->left,raro);
+	}
+	else
+	{
+		insertRaridade(curr->right,raro);
+	}
+}
+ 
 void InserirItem()
 {
 	string nome, dono, magia;
 	int id, raridade;
-	
 	cout << " -> Nome do Item: "; getline(cin >> ws, nome);
+	inserNome(root,nome);
 	cout << " -> Nome do Dono: "; getline(cin >> ws, dono);
 	cout << " -> Propriedade magica: "; getline(cin >> ws, magia);
 	cout << " -> Numero de Identidade: "; cin >> id;
 	cout << " -> Raridade do Item (0-100): "; cin >> raridade;
+	insertRaridade(raiz,raridade);
 	itens.push_back({nome, dono, magia, id, raridade});
 	cout << endl;
 }
-
+ 
 void Cadastro()
 {
 	int i = 1, item1, item2, peso, arestas = 0;
-	
 	cout << " ---------------- ITENS NO INVENTARIO ---------------- " << endl;
 	for(it = itens.begin(); it != itens.end(); it++)
 	{
@@ -49,19 +104,15 @@ void Cadastro()
 		i++;
 	}
 	cout << " ----------------------------------------------------- " << endl;
-	
 	//OBS QND NAO TIVER ITENS NO INVENTARIO SAIR DA FUNCAO
-	
 	cout << endl; cout << " -> Selecione dois itens: ";
 	cin >> item1 >> item2;
 	item1--; item2--;
 	cout << " -> Escreva similiaridade entre os itens (0-100): ";
 	cin >> peso; arestas++;
-	
 	similarens[item1].push_back({item1,item2,peso});
 	similarens[item2].push_back({item2,item1,peso});
-	
-	
+
 	cout << endl << " -------------- TABELA DE SIMILARIDADES -------------- " << endl;
 	for(i=0; i < arestas; i++)
 	{
@@ -72,22 +123,19 @@ void Cadastro()
 	}
 	cout << " ----------------------------------------------------- " << endl;
 }
-
+ 
 void Buscar()
 {
 	string nome, doninho;
 	int similaridade;
-	
 	// OBS SE NAO TIVER NENHUM ITEM SAIR DA FUNCAO 
 	// OBS QUANDO NAO ACHAR UM ITEM NAO PODE DAR ERRO, TEM Q SAIR
-	
 	cout << " -> Escolha um dono, para nao pertencer: ";
 	getline(cin >> ws, doninho);
 	cout << " -> Digite o nome do item, que queira ter similaridade: ";
 	getline(cin >> ws, nome);
 	cout << " -> Digite a similaridade: ";
 	cin >> similaridade;
-	
     int posicao = -1; // posicao do intem
     int indice = 0; // contador
     for (it = itens.begin(); it != itens.end(); it++)
@@ -99,9 +147,8 @@ void Buscar()
         }
 		indice++;
     }
-    
     cout << endl;
-
+ 
     for (ti = similarens[posicao].begin(); ti != similarens[posicao].end(); ti++)
     {
         indice = 0;
@@ -117,41 +164,68 @@ void Buscar()
 			indice++;
         }
 	}
-	
 }
-
+ 
+ArvoreNome * search(ArvoreNome * curr, string nome)
+{
+	if(curr == NULL)
+	{
+		return NULL;
+	}
+	else if(curr->nome == nome)
+	{
+		return curr;
+	}
+	else if(nome < curr->nome)
+	{
+		return search(curr->left,nome);
+	}
+	else if(nome > curr->nome)
+	{
+		return search(curr->right,nome);
+	}
+}
+ 
 void Verificar()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	string item;
+	cout << " -> Item que deseja procurar: ";
+	getline(cin >> ws, item);
+	ArvoreNome * result = search(root, item); // coloca p/ apontar o no do elemento
+	cout << endl;
+	if(result == NULL)
+	{
+		cout << "Item '" << item << "' nao encontrado no inventario." << endl;
+	} else {
+		cout << "Item '" << item << "' encontrado no inventario." << endl;
+	}
 }
-
+ 
 void ListarNome()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
-
+ 
 void ListarRaridade()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
-
+ 
 void ContarItens()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
-
+ 
 void RemoverItens()
 {
 	cout << "Funcionalidade em contruçao" << endl;
 }
-
-
-
+ 
+ 
 int main()
 {
 	int x;
 	setlocale(LC_ALL, "");
-	
 	while(true)
 	{
 		cout << endl;
@@ -170,7 +244,6 @@ int main()
 		cout << endl;
 		cout << " -> Insira opção desejada: ";
 		cin >> x; cout << endl;
-		
 		switch(x)
 		{
 			case 1:
@@ -203,6 +276,5 @@ int main()
 				cout << " ! OPCAO INVALIDA ! " << endl;;
 		}
 	}
-	
 	return 0;
 }
