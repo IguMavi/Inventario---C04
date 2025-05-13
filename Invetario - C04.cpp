@@ -201,14 +201,32 @@ void Verificar()
 	}
 }
  
+ void emOrdem(ArvoreNome * curr)
+ {
+ 	if(curr != NULL){
+	 	emOrdem(curr -> left);
+	 	cout << curr->nome << endl;
+	 	emOrdem(curr -> right);
+	 }
+ }
+ 
 void ListarNome()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	emOrdem(root);
 }
+ 
+ void emOrdemR(ArvoreRaridade * curr)
+ {
+ 	if(curr != NULL){
+	 	emOrdemR(curr -> right);
+	 	cout << curr->raro << endl;
+	 	emOrdemR(curr -> left);
+	 }
+ }
  
 void ListarRaridade()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	emOrdemR(raiz);
 }
  
 void ContarItens()
@@ -216,9 +234,73 @@ void ContarItens()
 	cout << "Funcionalidade em contruçao" << endl;
 }
  
+ ArvoreRaridade * repoint_less(ArvoreRaridade * & curr)
+{
+  if(curr->left == NULL)
+  {
+    ArvoreRaridade * aux = curr;
+    curr = curr->right;
+    return aux;
+  } else {
+    return repoint_less(curr->left);
+  }
+}
+
+bool remove(ArvoreRaridade * &curr, int info)
+{
+  if(curr == NULL)
+  {
+    return false;
+  }
+  else if(curr->raro == info)
+  {
+    ArvoreRaridade * aux = curr;
+    if(curr->left == NULL) // caso tenha so o filho da direita
+    {
+      curr = curr->right;
+    } 
+    else if(curr->right == NULL) // caso tenha so o filho da esquerda
+    {
+      curr = curr->left;
+    } 
+    else // caso tenha os dois filhos
+    {
+      aux = repoint_less(curr->right);
+      curr->raro = aux->raro; // o meu menor do lado dos maiores será a raiz(root)
+    }
+    delete aux;
+    aux = NULL;
+    return true;
+  }
+  else if(info < curr->raro)
+  {
+    return remove(curr->left,info);
+  }
+  else if(info > curr->raro)
+  {
+    return remove(curr->right,info);
+  }
+}
+
+ void removerMenores(ArvoreRaridade * &curr, int info)
+ {
+ 	if(curr != NULL){
+	 	removerMenores(curr -> left, info);
+	 	if(curr->raro < info){
+			 remove(curr, info);
+		 }
+	 	removerMenores(curr -> right, info);
+	 }
+ }
+ 
 void RemoverItens()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	int num;
+	cout << "Digite um valor: ";
+	cin >> num;
+	removerMenores(raiz, num);
+	cout << "A lista resultante é: " << endl;
+	emOrdemR(raiz);
 }
  
  
