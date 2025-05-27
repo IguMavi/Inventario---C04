@@ -231,10 +231,23 @@ void ListarRaridade()
  
 void ContarItens()
 {
-	cout << "Funcionalidade em contruçao" << endl;
+	string magia;
+    cout << " -> Digite a propriedade mágica para contagem: ";
+    getline(cin >> ws, magia);
+
+    int cont = 0;
+    for (it = itens.begin(); it != itens.end(); ++it)
+    {
+        if (it->magia == magia)
+            cont++;
+    }
+    
+	cout << endl;
+    cout << "Foram encontrados " << cont << " item(ns) com a magia '" << magia << "'." << endl;
 }
+
  
- ArvoreRaridade * repoint_less(ArvoreRaridade * & curr)
+ArvoreRaridade * repoint_less(ArvoreRaridade * & curr)
 {
   if(curr->left == NULL)
   {
@@ -246,6 +259,59 @@ void ContarItens()
   }
 }
 
+string apagarList(string nome, list<Itens>::iterator it)
+{
+	string aux = nome;
+	
+	itens.erase(it);
+	
+	return aux;
+}
+string buscarNomeR(int info)
+{
+	
+	int indice = 0;
+	for (it = itens.begin(); it != itens.end(); ++it)
+    {
+        if (it->raridade == info)
+		{
+			return apagarList(it->nome, it);
+		}
+        indice++;    
+    }
+    
+    return "";
+}
+
+bool removeNome(ArvoreNome *&curr, const string& nome)
+{
+    if (curr == NULL) return false;
+
+    if (nome < curr->nome)
+        return removeNome(curr->left, nome);
+    else if (nome > curr->nome)
+        return removeNome(curr->right, nome);
+    else
+    {
+        ArvoreNome *aux = curr;
+        if (curr->left == NULL)
+            curr = curr->right;
+        else if (curr->right == NULL)
+            curr = curr->left;
+        else
+        {
+            ArvoreNome *sub = curr->right;
+            while (sub->left != NULL)
+                sub = sub->left;
+            curr->nome = sub->nome;
+            removeNome(curr->right, sub->nome);
+            return true;
+        }
+        delete aux;
+        return true;
+    }
+}
+
 bool remove(ArvoreRaridade * &curr, int info)
 {
   if(curr == NULL)
@@ -254,6 +320,11 @@ bool remove(ArvoreRaridade * &curr, int info)
   }
   else if(curr->raro == info)
   {
+  	
+  	string nome = buscarNomeR(info);
+  	
+  	removeNome(root, nome);
+  	
     ArvoreRaridade * aux = curr;
     if(curr->left == NULL) // caso tenha so o filho da direita
     {
@@ -282,16 +353,34 @@ bool remove(ArvoreRaridade * &curr, int info)
   }
 }
 
- void removerMenores(ArvoreRaridade * &curr, int info)
- {
- 	if(curr != NULL){
-	 	removerMenores(curr -> left, info);
-	 	if(curr->raro < info){
-			 remove(curr, info);
-		 }
-	 	removerMenores(curr -> right, info);
-	 }
- }
+ // void removerMenores(ArvoreRaridade * &curr, int info)
+ // {
+ // 	if(curr != NULL){
+	//  	removerMenores(curr -> left, info);
+	//  	if(curr->raro < info){
+	// 		 remove(curr, info);
+	// 	 }
+	//  	removerMenores(curr -> right, info);
+	//  }
+ // }
+ 	 
+void removerMenores(ArvoreRaridade* &curr, int info)
+{
+    if (curr == NULL) 
+	{
+		return;	
+	}
+	
+    removerMenores(curr->left, info);
+    removerMenores(curr->right, info);
+
+    if (curr->raro < info)
+    {
+        remove(curr, curr->raro); // Isso já cuida de reorganizar o nó
+        removerMenores(curr, info); // Verifica novamente o novo nó que ficou no lugar
+    }
+}
+
  
 void RemoverItens()
 {
@@ -301,6 +390,8 @@ void RemoverItens()
 	removerMenores(raiz, num);
 	cout << "A lista resultante é: " << endl;
 	emOrdemR(raiz);
+	cout << "A lista resultante nome é: " << endl;
+	emOrdem(root);
 }
  
  
