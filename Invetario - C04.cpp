@@ -6,6 +6,10 @@
  
 using namespace std;
  
+struct ponto {
+    int x, y;
+};
+ 
 struct Itens
 {
 	string nome, dono, magia;
@@ -39,6 +43,24 @@ list<Similaridade>::iterator ti;
  
 ArvoreNome * root = NULL; // Para a arvore binaria
 ArvoreRaridade* raiz = NULL;
+ 
+// Retorna true se o ponto p está dentro do polígono
+bool dentro_do_poligono(ponto pol[], int n, ponto p) {
+    int cont = 0;
+    for (int i = 0; i < n; i++) {
+        ponto a = pol[i];
+        ponto b = pol[(i + 1) % n]; // próximo vértice, com volta ao início
+ 
+        // Checa se o ponto está entre os valores y dos dois vértices
+        if ((a.y > p.y) != (b.y > p.y)) {
+            // Calcula a coordenada x onde a linha do ponto cruza a aresta
+            double x_intersecao = (double)(b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x;
+            if (p.x < x_intersecao)
+                cont++;
+        }
+    }
+    return (cont % 2 == 1); // Se número de interseções for ímpar, está dentro
+} 
  
 void inserNome(ArvoreNome * &curr, string nome)
 {
@@ -77,19 +99,35 @@ void insertRaridade(ArvoreRaridade * &curr, int raro)
 		insertRaridade(curr->right,raro);
 	}
 }
- 
+
+ponto p;
+ponto pol[100];
+int n;
+
 void InserirItem()
 {
 	string nome, dono, magia;
 	int id, raridade;
+	
 	cout << " -> Nome do Item: "; getline(cin >> ws, nome);
-	inserNome(root,nome);
 	cout << " -> Nome do Dono: "; getline(cin >> ws, dono);
 	cout << " -> Propriedade magica: "; getline(cin >> ws, magia);
 	cout << " -> Numero de Identidade: "; cin >> id;
 	cout << " -> Raridade do Item (0-100): "; cin >> raridade;
-	insertRaridade(raiz,raridade);
-	itens.push_back({nome, dono, magia, id, raridade});
+	cout << " -> Coordenadas do Item: X = "; cin >> p.x;
+	cout << "	                 Y = "; cin >> p.y;
+	cout << endl;
+	if (dentro_do_poligono(pol, n, p))
+	{
+		inserNome(root,nome);
+		insertRaridade(raiz,raridade);
+		itens.push_back({nome, dono, magia, id, raridade});
+		cout << "Item adicionado com sucesso!";
+	}
+    else
+	{
+		 cout << "Impossivel adicionar o item com essas coordenas."; 	
+	}
 	cout << endl;
 }
  
@@ -353,17 +391,6 @@ bool remove(ArvoreRaridade * &curr, int info)
   }
 }
 
- // void removerMenores(ArvoreRaridade * &curr, int info)
- // {
- // 	if(curr != NULL){
-	//  	removerMenores(curr -> left, info);
-	//  	if(curr->raro < info){
-	// 		 remove(curr, info);
-	// 	 }
-	//  	removerMenores(curr -> right, info);
-	//  }
- // }
- 	 
 void removerMenores(ArvoreRaridade* &curr, int info)
 {
     if (curr == NULL) 
@@ -399,6 +426,32 @@ int main()
 {
 	int x;
 	setlocale(LC_ALL, "");
+	int sair = NULL;
+	int cont = 1;
+	
+	cout << "Por favor, adicione o tamanho da bolsa antes de inserir o 1º Item." << endl;
+	cout << endl;
+	cout << " -> Quantidade de pontos: "; cin >> n;
+	cout << endl;
+	for(int i = 0; i < n; i++)
+	{
+		cout << "Ponto " << cont << ":" << endl;
+		cout << " -> X = "; cin >> pol[i].x;
+		cout << " -> Y = "; cin >> pol[i].y; cout << endl;
+		cont++;
+	}
+	cout << "Bolsa criada com sucesso! Agora pode prosseguir com a insercao de itens." << endl;
+	cout << endl;
+	cout << "Insira [1] para continuar e [0] para sair: ";
+	cin >> sair;
+	if(sair == 1)
+	{
+		system("cls");
+	} else {
+		return 0;
+	}
+	
+	
 	while(true)
 	{
 		cout << endl;
