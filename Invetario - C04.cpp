@@ -1,3 +1,10 @@
+// EQUIPE -----------------------------------------
+NOMES : IGOR MENDES MAVIGNO - 
+		JOAO AMBACK KOVACSIK SELIM - 
+		LARA MOREIRA SIÉCOLA - 611
+		LAURA FERNANDA DE CASTRO FERREIRA - 2285
+		PEDRO HENRIQUE SANTOS DE OLIVEIRA - 2170
+// ------------------------------------------------
 #include <iostream>
 #include <locale>
 #include <string>
@@ -6,6 +13,7 @@
 
 using namespace std;
 
+// INICIALIZANDO VARIAVIES ------------------------
 struct ponto
 {
 	int x, y;
@@ -44,6 +52,9 @@ list<Similaridade>::iterator ti;
 
 ArvoreNome * root = NULL; // Para a arvore binaria
 ArvoreRaridade* raiz = NULL;
+// ------------------------------------------------
+
+// INSERINDO ITENS --------------------------------
 
 // Retorna true se o ponto p está dentro do polígono
 bool dentro_do_poligono(ponto pol[], int n, ponto p)
@@ -141,7 +152,9 @@ void InserirItem()
 	}
 	cout << endl;
 }
+// ------------------------------------------------
 
+// CADASTRANDO ITENS ------------------------------
 void Cadastro()
 {
 	if(root != NULL)
@@ -163,15 +176,19 @@ void Cadastro()
 		cout << " -> Escreva similiaridade entre os itens (0-100): ";
 		cin >> peso;
 		arestas++;
-		similarens[item1].push_back( {item1, item2, peso});
-		similarens[item2].push_back( {item2, item1, peso});
+		similarens[item1].push_back({item1, item2, peso});
+		similarens[item2].push_back({item2, item1, peso});
 
 		cout << endl << " -------------- TABELA DE SIMILARIDADES -------------- " << endl;
-		for(i = 0; i < arestas; i++)
+		i = 0;
+		for(it = itens.begin(); it != itens.end(); ++it, ++i)
 		{
 			for(ti = similarens[i].begin(); ti != similarens[i].end(); ti++)
 			{
-				cout << "- " << ti ->origem + 1 << " similar com " << ti -> destino + 1 << ": " << ti -> peso << "%" << endl;
+				if (ti->origem < ti->destino) // mostra só uma vez
+            	{
+					cout << "- " << ti ->origem + 1 << " similar com " << ti -> destino + 1 << ": " << ti -> peso << "%" << endl;
+				}
 			}
 		}
 		cout << " ----------------------------------------------------- " << endl;
@@ -181,7 +198,9 @@ void Cadastro()
 		cout << "Nao sera possivel cadastrar similaridade entre itens, pois nao ha itens." << endl;
 	}
 }
+// ------------------------------------------------
 
+// BUSCANDO ITENS ---------------------------------
 void Buscar()
 {
 	if(root != NULL)
@@ -228,7 +247,9 @@ void Buscar()
 		cout << "Nao ha itens para serem buscados." << endl;
 	}
 }
+// ------------------------------------------------
 
+// VERIFICANDO ITEM -------------------------------
 ArvoreNome * search(ArvoreNome * curr, string nome)
 {
 	if(curr == NULL)
@@ -272,7 +293,9 @@ void Verificar()
 		cout << "Inventario esta vazio, nao ha itens para verificar existencia." << endl;
 	}
 }
+// ------------------------------------------------
 
+// LISTANDO ITENS ---------------------------------
 void emOrdem(ArvoreNome * curr)
 {
 	if(curr != NULL)
@@ -336,7 +359,9 @@ void ListarRaridade()
 	}
 
 }
+// ------------------------------------------------
 
+// CONTANDO ITENS ---------------------------------
 void ContarItens()
 {
 	if(root != NULL)
@@ -360,8 +385,9 @@ void ContarItens()
 		cout << "Inventario vazio, nao sera possivel procurar item." << endl;
 	}
 }
+// ------------------------------------------------
 
-
+// REMOVENDO ITENS --------------------------------
 ArvoreRaridade * repoint_less(ArvoreRaridade * & curr)
 {
 	if(curr->left == NULL)
@@ -508,8 +534,9 @@ void RemoverItens()
 		cout << "Inventario nao tem itens para que se possa ser removido." << endl;
 	}
 }
+// ------------------------------------------------
 
-
+// MENU -------------------------------------------
 int main()
 {
 	int x;
@@ -616,3 +643,4 @@ int main()
 	}
 	return 0;
 }
+// ------------------------------------------------
