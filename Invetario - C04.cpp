@@ -1,11 +1,11 @@
-// EQUIPE -----------------------------------------
+/* EQUIPE -----------------------------------------
 NOMES : 
 		IGOR MENDES MAVIGNO - 663
 		JOAO AMBACK KOVACSIK SELIM - 631
 		LARA MOREIRA SIÉCOLA - 611
 		LAURA FERNANDA DE CASTRO FERREIRA - 2285
 		PEDRO HENRIQUE SANTOS DE OLIVEIRA - 2170
-// ------------------------------------------------
+*/// ------------------------------------------------
 #include <iostream>
 #include <locale>
 #include <string>
