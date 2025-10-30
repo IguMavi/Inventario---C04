@@ -1,2 +1,2 @@
-# Inventario---C04
+#Inventário infinito
 Projeto de Inventário, Aloritmos 3.
